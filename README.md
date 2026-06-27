@@ -1,6 +1,6 @@
-# Volans xui 网络部署
+# Volans xui-net
 
-独立的 xui/NAT 网络部署项目。只负责网络侧组件栈（xui 面板及可选的 NAT 出口代理），
+独立的 xui/NAT 网络栈。只负责网络侧组件（xui 面板及可选的 NAT 出口代理），
 应当部署到独立的服务器目录，通常为 `/opt/xui`。
 
 如果服务器上还运行着其他项目，请与它们保持目录、`.env`、compose 文件与 service

@@ -5,15 +5,15 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
 
 log() {
-  printf '[xui-network-deploy] %s\n' "$*"
+  printf '[xui-net] %s\n' "$*"
 }
 
 warn() {
-  printf '[xui-network-deploy][WARN] %s\n' "$*" >&2
+  printf '[xui-net][WARN] %s\n' "$*" >&2
 }
 
 die() {
-  printf '[xui-network-deploy][ERROR] %s\n' "$*" >&2
+  printf '[xui-net][ERROR] %s\n' "$*" >&2
   exit 1
 }
 
