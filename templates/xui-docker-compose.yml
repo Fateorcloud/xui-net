@@ -18,3 +18,22 @@ services:
     pids_limit: 256
     security_opt:
       - no-new-privileges:true
+
+  # 可选：xui 自带的 Cloudflare 隧道，让面板通过域名访问，且与其他项目（如 lobehub）
+  # 的隧道完全独立。启用方式：在 .env 填入 XUI_TUNNEL_TOKEN，然后
+  #   docker compose --profile tunnel up -d
+  # 在 Cloudflare 后台为该隧道添加路由：xui.<域名> -> http://xui-3xui:12053
+  # 连接器与 xui 同处一个 docker 网络，按容器名直达，无需 host 网络或宿主机端口映射。
+  cloudflared:
+    image: cloudflare/cloudflared:latest
+    container_name: xui-cloudflared
+    restart: unless-stopped
+    command: tunnel --no-autoupdate run
+    environment:
+      TUNNEL_TOKEN: ${XUI_TUNNEL_TOKEN:-}
+    depends_on:
+      - xui
+    profiles: ["tunnel"]
+    mem_limit: 128m
+    security_opt:
+      - no-new-privileges:true

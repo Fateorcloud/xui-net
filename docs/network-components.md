@@ -71,3 +71,22 @@ NO_PROXY=localhost,127.0.0.1,::1,.local,.example-direct.com
 - 请勿提交 SSH 密钥或 known-hosts 文件。
 - 未经过深思熟虑的访问策略，请勿将 xui 面板公开暴露。
 - NAT HTTP 代理监听 `127.0.0.1:7890`，仅供本地出站流量使用。
+
+## 可选：xui 自带 Cloudflare 隧道（域名访问面板）
+
+xui 面板默认只绑 `127.0.0.1`，需经 SSH 隧道访问。若想用域名访问，可启用 compose 里可选的
+`cloudflared` 服务，给 xui 一条**自己的**隧道，与其他项目（如 lobehub）的隧道完全独立 ——
+符合本项目"网络侧自包含、与 LobeHub 解耦"的边界。
+
+1. 在 Cloudflare Zero Trust 后台新建一条隧道（例如 `hk1-xui`），复制它的 **token**。
+2. 把 token 填入 `.env` 的 `XUI_TUNNEL_TOKEN`，启动连接器：
+
+   ```bash
+   docker compose --profile tunnel up -d
+   ```
+
+3. 在该隧道下添加路由：`xui.<你的域名>` → 服务类型 `HTTP`、URL `http://xui-3xui:12053`。
+   连接器与 xui 容器同处一个 docker 网络，按容器名直达，无需 host 网络或宿主机端口映射。
+4. 强烈建议在 Cloudflare Access 给该域名加一层邮箱/SSO 验证；并把面板 `webBasePath`
+   改成不易猜的路径，降低被扫描爆破的风险。
+
