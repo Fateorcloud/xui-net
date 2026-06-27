@@ -1,14 +1,10 @@
 # Volans xui 网络部署
 
-这是从 LobeHub 部署套件中拆分出来的独立 xui/NAT 部署项目。它只负责网络侧的
-组件栈，应当部署到独立的服务器目录，通常为 `/opt/xui`。
+独立的 xui/NAT 网络部署项目。只负责网络侧组件栈（xui 面板及可选的 NAT 出口代理），
+应当部署到独立的服务器目录，通常为 `/opt/xui`。
 
-LobeHub 项目不依赖本仓库。如果两者部署在同一台服务器上，请保持目录相互独立：
-
-```text
-/opt/lobehub  LobeHub AI 平台
-/opt/xui      xui 及可选的 NAT 出口代理
-```
+如果服务器上还运行着其他项目，请与它们保持目录、`.env`、compose 文件与 service
+单元相互隔离，互不影响。
 
 ## 部署
 
@@ -32,7 +28,7 @@ sudo bash deploy.sh network --yes
 
 ## 边界
 
-本项目不会安装 LobeHub、PostgreSQL、Redis、RustFS、SearXNG、NewAPI、
-Open WebUI 或任何图床站点。
+本项目只部署 xui 及可选的 NAT 出口代理，不涉及任何其他应用栈（数据库、缓存、
+对象存储、搜索、AI 平台等）。
 
 请将真实的 `.env` 取值、SSH 密钥、xui 数据库以及生成的证书排除在 Git 之外。

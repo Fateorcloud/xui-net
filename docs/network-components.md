@@ -1,7 +1,6 @@
 # xui/NAT 网络部署
 
-本项目部署一套独立的 xui 网络侧组件栈，以及一个可选的 NAT 出口代理。它与
-LobeHub AI 平台项目刻意保持分离。
+本项目部署一套独立的 xui 网络侧组件栈，以及一个可选的 NAT 出口代理。
 
 ## 边界
 
@@ -11,8 +10,8 @@ LobeHub AI 平台项目刻意保持分离。
 | NAT 代理 | `sudo bash deploy.sh nat-proxy --yes` | 可选的 SSH SOCKS 隧道及本地 HTTP 代理 |
 | 组合安装 | `sudo bash deploy.sh network --yes` | 依次执行 xui 和 NAT 安装 |
 
-请将本项目部署到独立的服务器目录，例如 `/opt/xui`。不要把它的 `.env`、
-compose 文件或 service 单元混入 `/opt/lobehub`。
+请将本项目部署到独立的服务器目录，例如 `/opt/xui`。与服务器上其他项目保持
+`.env`、compose 文件及 service 单元相互隔离。
 
 ## 启用
 
@@ -75,8 +74,8 @@ NO_PROXY=localhost,127.0.0.1,::1,.local,.example-direct.com
 ## 可选：xui 自带 Cloudflare 隧道（域名访问面板）
 
 xui 面板默认只绑 `127.0.0.1`，需经 SSH 隧道访问。若想用域名访问，可启用 compose 里可选的
-`cloudflared` 服务，给 xui 一条**自己的**隧道，与其他项目（如 lobehub）的隧道完全独立 ——
-符合本项目"网络侧自包含、与 LobeHub 解耦"的边界。
+`cloudflared` 服务，给 xui 一条**自己的**隧道，与服务器上其他项目的隧道完全独立 ——
+符合本项目网络侧自包含的边界。
 
 1. 在 Cloudflare Zero Trust 后台新建一条隧道（例如 `hk1-xui`），复制它的 **token**。
 2. 把 token 填入 `.env` 的 `XUI_TUNNEL_TOKEN`，启动连接器：
