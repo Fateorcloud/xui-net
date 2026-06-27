@@ -19,7 +19,16 @@
 
 ## 部署 xui 面板
 
-### 1. 准备配置
+### 1. 获取项目
+
+在服务器上克隆本仓库并进入目录：
+
+```bash
+git clone https://github.com/Fateorcloud/xui-net.git
+cd xui-net
+```
+
+### 2. 准备配置
 
 ```bash
 cp .env.example .env
@@ -35,7 +44,7 @@ nano .env
 | `XUI_PANEL_PORT` | 面板端口，默认 `12053`（仅绑本机回环） |
 | `XUI_REALITY_PORT` | Reality 入站端口，默认 `31444`（需在防火墙/安全组放行） |
 
-### 2. 安装
+### 3. 安装
 
 ```bash
 sudo bash deploy.sh xui --yes
@@ -44,7 +53,7 @@ sudo bash deploy.sh xui --yes
 脚本会：把模板渲染进 `/opt/xui` → `docker compose up -d` 启动容器 → 等面板就绪 →
 写入你设的管理员账号与端口 → 重启面板。数据持久化在 `/opt/xui/db`、`/opt/xui/cert`。
 
-### 3. 访问面板
+### 4. 访问面板
 
 面板只绑在 `127.0.0.1:<XUI_PANEL_PORT>`，**不对公网开放**。用 SSH 隧道访问：
 
