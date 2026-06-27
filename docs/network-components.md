@@ -45,6 +45,26 @@ HTTPS_PROXY=http://127.0.0.1:7890
 NO_PROXY=localhost,127.0.0.1,.local
 ```
 
+> 使用 `network_mode: host` 的容器可直接访问宿主机的 `127.0.0.1:7890`，无需任何
+> docker 网关绑定或 `host.docker.internal`。
+
+### 选择性路由：只让部分流量走 NAT
+
+`HTTP_PROXY` 会让**所有**出站默认经 NAT 出口，`NO_PROXY` 中列出的域名则**直连**。
+典型场景：服务器在受限地区（如香港），某些境外 API（如 OpenAI）从本地直连会被拒，
+需要经 NAT 的合规出口；而本地或就近的服务则应直连以降低延迟。把希望直连的域名追加到
+`NO_PROXY` 即可：
+
+```env
+HTTP_PROXY=http://127.0.0.1:7890
+HTTPS_PROXY=http://127.0.0.1:7890
+# 逗号分隔；前导点匹配子域。列出的域名直连，其余走 NAT。
+NO_PROXY=localhost,127.0.0.1,::1,.local,.example-direct.com
+```
+
+> 基于 undici 的 Node 应用（含使用 `EnvHttpProxyAgent` / `global-agent` 的程序）
+> 会尊重 `NO_PROXY`；Node 24+ 也可用 `NODE_USE_ENV_PROXY=1` 让内置 `fetch` 读取这些变量。
+
 ## 安全须知
 
 - 如果 `NAT_SSH_HOST` 属于私有信息，请勿提交。
