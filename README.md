@@ -52,8 +52,9 @@ nano .env
 sudo bash deploy.sh xui --yes
 ```
 
-脚本会：把模板渲染进 `/opt/xui` → `docker compose up -d` 启动容器 → 等面板就绪 →
-写入你设的管理员账号与端口 → 重启面板。数据持久化在 `/opt/xui/db`、`/opt/xui/cert`。
+脚本会：把模板渲染进部署目录（默认 `/opt/xui`，可由 `XUI_DEPLOY_DIR` 改）→
+`docker compose up -d` 启动容器 → 等面板就绪 → 写入你设的管理员账号与端口 →
+重启面板。数据持久化在 `<部署目录>/db`、`<部署目录>/cert`。
 
 ### 4. 访问面板
 
@@ -69,6 +70,8 @@ sudo bash deploy.sh xui --yes
 
   保持该窗口，再用浏览器打开 `http://localhost:12053`。
 
+> 上面的 `12053` 是默认端口；若你改过 `XUI_PANEL_PORT`，命令与地址里的 `12053` 都换成你的值。
+
 登录用 `.env` 里设的账号密码，随后在面板内**手动配置 Reality 入站**。
 
 > 想用域名（如 `xui.example.com`）访问面板、并加一层验证？见
@@ -76,12 +79,24 @@ sudo bash deploy.sh xui --yes
 
 ## 部署 NAT 出口代理（可选）
 
-仅当你需要"让本机部分流量从境外 VPS 出口"时才需要。在 `.env` 设
-`ENABLE_NAT_PROXY=true` 并填好 `NAT_SSH_*`（境外 VPS 的主机/端口/用户/密钥），然后：
+仅当你需要"让本机部分流量从境外 VPS 出口"时才需要。
 
-```bash
-sudo bash deploy.sh nat-proxy --yes
-```
+1. **准备 SSH 密钥**（脚本不会自动生成或授权）。确保 `NAT_SSH_KEY_PATH`（默认
+   `/root/.ssh/nat_ed25519`）下有私钥，且对应公钥已加到境外 VPS。没有就先生成：
+
+   ```bash
+   ssh-keygen -t ed25519 -f /root/.ssh/nat_ed25519 -C nat-egress
+   # 再把 /root/.ssh/nat_ed25519.pub 追加到 VPS 的 ~/.ssh/authorized_keys
+   ```
+
+2. 在 `.env` 设 `ENABLE_NAT_PROXY=true`，并填好 `NAT_SSH_HOST` / `NAT_SSH_PORT` /
+   `NAT_SSH_USER` / `NAT_SSH_KEY_PATH`。
+
+3. 安装：
+
+   ```bash
+   sudo bash deploy.sh nat-proxy --yes
+   ```
 
 装好后本地 HTTP 代理在 `127.0.0.1:7890`。消费方在各自项目里设
 `HTTP_PROXY=http://127.0.0.1:7890` 即可使用。详见
