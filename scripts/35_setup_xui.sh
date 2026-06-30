@@ -37,7 +37,7 @@ docker exec xui-3xui /app/x-ui setting \
   -username "$XUI_ADMIN_USERNAME" \
   -password "$XUI_ADMIN_PASSWORD" \
   -port "${XUI_PANEL_PORT:-12053}" \
-  -webBasePath "/" \
+  -webBasePath "${XUI_WEB_BASE_PATH:-/}" \
   -listenIP "0.0.0.0"
 
 (cd "$XUI_DEPLOY_DIR" && docker compose restart xui)
