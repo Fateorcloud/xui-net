@@ -74,6 +74,10 @@ sudo bash deploy.sh xui --yes
 
 登录用 `.env` 里设的账号密码，随后在面板内**手动配置 Reality 入站**。
 
+> 配 Reality 时，**伪装域名（dest/SNI）要选你服务器能正常完成 TLS 握手的站点**
+> （如 `www.apple.com`、`www.cloudflare.com`、`gateway.icloud.com`）。若客户端连接一直
+> 报 EOF / 握手失败，多半是这个 dest 在你服务器环境下借证书失败，**换一个 dest 即可**。
+
 > 想用域名（如 `xui.example.com`）访问面板、并加一层验证？见
 > [docs/network-components.md](docs/network-components.md) 的「自带 Cloudflare 隧道」。
 

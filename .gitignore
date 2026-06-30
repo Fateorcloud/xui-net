@@ -9,3 +9,6 @@ db/
 NAT-VPS-SWAP-RUNBOOK.md
 # 本地迁移摘要（含真实主机名，勿提交公开仓库）
 MIGRATION.md
+# 本地生成的客户端配置（含节点 uuid/公钥等凭据，勿提交）
+clash.yaml
+*.clash.yaml
