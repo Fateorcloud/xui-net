@@ -7,3 +7,5 @@ db/
 
 # 本地运维手册（含真实主机名，勿提交公开仓库）
 NAT-VPS-SWAP-RUNBOOK.md
+# 本地迁移摘要（含真实主机名，勿提交公开仓库）
+MIGRATION.md
