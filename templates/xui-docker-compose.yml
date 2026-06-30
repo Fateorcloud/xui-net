@@ -37,3 +37,11 @@ services:
     mem_limit: 128m
     security_opt:
       - no-new-privileges:true
+
+# 固定网段，保证网关 IP（默认 172.19.0.1）稳定：当 privoxy 等宿主机服务绑定该网关地址、
+# 供本网络的容器（如 xray 的 nat-ai 分流）访问时，避免网络重建后网段漂移导致失效。
+networks:
+  default:
+    ipam:
+      config:
+        - subnet: ${XUI_NETWORK_SUBNET:-172.19.0.0/16}
