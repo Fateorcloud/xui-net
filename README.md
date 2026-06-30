@@ -77,6 +77,23 @@ sudo bash deploy.sh xui --yes
 > 想用域名（如 `xui.example.com`）访问面板、并加一层验证？见
 > [docs/network-components.md](docs/network-components.md) 的「自带 Cloudflare 隧道」。
 
+## 客户端：把节点导入 mihomo
+
+在面板里配好 Reality 入站后，用面板的分享链接（`vless://...`）生成
+mihomo (Clash.Meta) 配置：
+
+```bash
+# 只输出 proxies 片段（贴进你已有的配置）
+python3 scripts/vless2mihomo.py 'vless://...'
+
+# 直接生成含分流规则（国内直连、AI 走代理）的完整配置文件
+python3 scripts/vless2mihomo.py --full -o clash.yaml 'vless://...'
+```
+
+支持 reality / tls 与 tcp / ws / grpc，可传多个链接或从 stdin 读；仅需 Python 3，无第三方依赖。
+
+> 链接里的节点地址要用服务器**直连 IP**，不要用经 Cloudflare 代理的面板域名（Reality 不走 CF）。
+
 ## 部署 NAT 出口代理（可选）
 
 仅当你需要"让本机部分流量从境外 VPS 出口"时才需要。
