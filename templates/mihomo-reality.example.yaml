@@ -1,3 +1,8 @@
+# mihomo (Clash.Meta) 手工示例 —— 把下面的 <...> 占位符替换成你的 Reality 节点参数。
+# 懒得手填？用本仓库的转换脚本直接从面板分享链接（vless://...）生成完整配置：
+#   python3 scripts/vless2mihomo.py --full -o clash.yaml 'vless://...'
+# 注意：server 用服务器直连 IP，勿用经 Cloudflare 代理的面板域名（Reality 不走 CF）。
+
 mixed-port: 7890
 allow-lan: false
 mode: rule
